@@ -47,6 +47,7 @@ import pandas as pd
 from googlesearch import search
 import tweepy
 from screen_recorder_sdk import screen_recorder
+from config.definitions import ROOT_DIR
 
 #GUI Objects Initialization
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
@@ -60,7 +61,7 @@ engine=pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
 print(voices)
 engine.setProperty('voice',voices[1].id)
-chrome_path = 'C:\Program Files\Google\Chrome\Application\chrome.exe %s'
+#chrome_path = 'C:\Program Files\Google\Chrome\Application\chrome %s'
 
 
 def speak(text):
@@ -130,7 +131,8 @@ def get_latest_image(dirpath, valid_extensions=('jpg','jpeg','png')):
 
 
 def f_help(f_obj):
-    webbrowser.get('windows-default').open("file:///D:/Project/Cypher/code/website/index.html#services")
+    index_path= os.path.join(ROOT_DIR, 'website', 'index.html')
+    webbrowser.get('windows-default').open(index_path)
     #speak("Please follow the link opened on webbrowser")
     return "Please follow the link opened on webbrowser"
 
@@ -156,8 +158,8 @@ def f_aknowledgement(f_obj):
     return "I was built by Team Cypher"
 
 def f_website(f_obj):
-    webbrowser.get('windows-default').open("file:///D:/Project/Cypher/code/website/index.html#hero")
-    #speak("Opening Cypher Website")
+    index_path= os.path.join(ROOT_DIR, 'website', 'index.html')
+    webbrowser.get('windows-default').open(index_path)
     return 'Opened Cypher Website'
 
 def f_time(f_obj):
@@ -181,7 +183,7 @@ def f_gmail(f_obj):
     return "Opened GMail"
 
 def f_vscode(f_obj):
-    subprocess.Popen("C:\\Users\\prady\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe")
+    subprocess.Popen("D:\\ProgramFiles\\VSCode\\Microsoft VS Code\\Code.exe")
     return "Opened VS Code"
 
 def f_classroom(f_obj):
@@ -225,10 +227,12 @@ def f_text(f_obj):
     img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img=cv2.threshold( img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
     img=cv2.medianBlur(img, 5)
-    pytesseract.pytesseract.tesseract_cmd =r'C:\Users\prady\AppData\Local\Tesseract-OCR\tesseract.exe'
+    pytesseract.pytesseract.tesseract_cmd =r'D:\ProgramFiles\pytess\tesseract.exe'
     text = pytesseract.image_to_string(img) 
     print(text)
+    return(text)
 
+    
 def f_object(f_obj):
     '''
     detects object in frame using screenshot function
@@ -243,10 +247,10 @@ def f_object(f_obj):
     resized_image = image.resize((round(image.size[0]/div),round(image.size[1]/div)))
     resized_image.save('./yoloFolder/images/na.png')
     classes_names=['person','bicycle','car','motorbike','aeroplane','bus','train','truck','boat','traffic light','fire hydrant','stop sign','parking meter','bench','bird','cat','dog','horse','sheep','cow','elephant','bear','zebra','giraffe','backpack','umbrella','handbag','tie','suitcase','frisbee','skis','snowboard','sports ball','kite','baseball bat','baseball glove','skateboard','surfboard','tennis racket','bottle','wine glass','cup','fork','knife','spoon','bowl','banana','apple','sandwich','orange','broccoli','carrot','hot dog','pizza','donut','cake','chair','sofa','pottedplant','bed','diningtable','toilet','tvmonitor','laptop','mouse','remote','keyboard','cell phone','microwave','oven','toaster','sink','refrigerator','book','clock','vase','scissors','teddy bear','hair drier','toothbrush']
-    model=cv2.dnn.readNet("./yoloFolder/images/yoloFolder/yolov3.cfg")
+    model=cv2.dnn.readNet("./yoloFolder/yolov3.cfg")
     layer_names = model.getLayerNames()
     output_layers=[layer_names[i-1]for i in model.getUnconnectedOutLayers()]
-    image=cv2.imread("./yoloFolder/images/yoloFolder/images/na.png")
+    image=cv2.imread("./yoloFolder/images/na.png")
     height, width, channels = image.shape
     blob=cv2.dnn.blobFromImage(image, 0.00392, (416,416), (0,0,0), True, crop=False)
     model.setInput(blob)
@@ -353,10 +357,10 @@ def f_study_profile(f_obj):
     '''
     webbrowser.get('windows-default').open("https://mail.google.com/mail/u/0/#inbox")
     webbrowser.get('windows-default').open("https://stackoverflow.com/login")
-    subprocess.Popen("C:\\Users\\prady\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe")
+    subprocess.Popen("D:\\ProgramFiles\\VSCode\\Microsoft VS Code\\Code.exe")
     webbrowser.get('windows-default').open("https://www.hackerrank.com/dashboard")
     webbrowser.get('windows-default').open("https://classroom.google.com/u/2/h")
-    subprocess.Popen("C:\\Users\\prady\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
+    subprocess.Popen("C:\\Users\\milin\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
     #speak("Started Profile Study, All the best Studying!")
     return "Started Profile Study, All the best Studying!"
 
@@ -364,13 +368,13 @@ def f_enjoy_profile(f_obj):
     webbrowser.get('windows-default').open("https://www.youtube.com")
     webbrowser.get('windows-default').open("https://open.spotify.com/")
     webbrowser.get('windows-default').open("https://www.netflix.com/browse")        
-    subprocess.Popen("C:\\Users\\prady\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
+    subprocess.Popen("C:\\Users\\milin\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
     #speak("Started Profile Chill! Enjoy Sir!")
     return "Started Profile Chill! Enjoy Sir!"
 
 def f_game_profile(f_obj):
     subprocess.Popen("E:\\Program Files\\Valorant\\Riot Games\\Riot Client\\RiotClientServices.exe")
-    subprocess.Popen("C:\\Users\\prady\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
+    subprocess.Popen("C:\\Users\\milin\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
     #speak("Started Profile Game! Enjoy Gaming, dont mald!")
     return "Started Profile Game! Enjoy Gaming, dont mald!"
 
@@ -399,9 +403,12 @@ def f_camera(f_obj):
     return "Clicked you picture, saved in captures folder"
 #check
 def f_recycle(f_obj):
-    winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
-    #speak("Emptied Recycle Bin")
-    return "Emptied Recycle Bin"
+    try:
+        winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
+        return "Emptied Recycle Bin"
+    except:
+        return "Recycle Bin already empty"
+        
 
 def f_joke(f_obj):
     data = pd.read_csv("./files/jokes1.csv")
@@ -491,7 +498,7 @@ def f_audio(f_obj):
 
 def f_wiki(f_obj):
     #speak('Searching Wikipedia..')
-    f_obj =f_obj.replace("wikipedia", "")
+    #f_obj =f_obj.replace("wikipedia", "")
     results = wikipedia.summary(f_obj, sentences=3)
     #speak("According to Wikipedia")
     #speak(results)
@@ -514,6 +521,10 @@ def f_close(f_obj):
     root_tk.destroy()
     return 'Cypher is shutting down,Good bye'
 
+def f_clear(f_obj):
+    ChatHistory.delete("1.0","end")
+    return None
+
 def f_commands(f_obj):
     if f_obj in ["show commands","help","show command"]:
         f_obj="commands"
@@ -521,7 +532,7 @@ def f_commands(f_obj):
     elif f_obj in ["hello","hi"] :
         f_obj="greetings1"
     
-    elif f_obj in ["about you" , "website"]:
+    elif f_obj in ["website","about you"]:
         f_obj="website"
 
     else:
@@ -559,6 +570,7 @@ def f_commands(f_obj):
         "empty recycle bin" : f_recycle,
         "tell joke" : f_joke,
         "show backgrounds" : f_background,
+        #change the logic
         "write note" : f_note1,
         "show note" : f_note2,
         "screenshot" : f_screenshot,
@@ -568,6 +580,7 @@ def f_commands(f_obj):
         "lock window" : f_lock,
         "shutdown" : f_shutdown,
         "close" : f_close,
+        "clear" : f_clear,
         "bye" : f_close
     }
     ans=d_commands.get(f_obj,'not a command')
@@ -581,8 +594,8 @@ def f_commands(f_obj):
 def getResponse(msg):
     statement = msg.lower()
     split_statement = statement.split()
-    #print(split_statement)
-    if "weather" in statement[0]:
+    print(split_statement)
+    if "weather" in split_statement[0]:
         statement = statement.replace("weather", "")
         output = f_weather(statement)
         print(output)
@@ -600,17 +613,17 @@ def getResponse(msg):
         print(output)
         return output
 
-    elif statement in ["how are you","how you doing","how are you?","wassup?","wassup"]:
+    elif statement.lower() in ["how are you","how you doing","how are you?","wassup?","wassup"]:
         output = f_greeting1(statement)
         print(output)
         return output
     
-    elif  statement in ['who are you','what can you do','whats your name']:
+    elif  statement.lower() in ['who are you?','what can you do?','whats your name?','who are you','what can you do','whats your name']:
         output = f_introduction(statement)
         print(output)
         return output
     
-    elif  statement in ["who made you" ,"who created you" , "who discovered you"]:
+    elif  statement.lower() in ["who made you" ,"who created you" , "who discovered you","who made you?" ,"who created you?" , "who discovered you?"]:
         output = f_aknowledgement(statement)
         print(output)
         return output
@@ -677,15 +690,12 @@ ChatHistory.place(height=395, width=445)
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 #logo = tkinter.PhotoImage(file="./logo.png")
-image = Image.open('D:\Project\Cypher\code\joshi\logo.png')
+image = Image.open('logo.png')
 # The (450, 350) is (height, width)
 image = image.resize((160, 100), Image.ANTIALIAS)
 my_img = ImageTk.PhotoImage(image)
 
-bgimg = Image.open('D:\Project\Cypher\code\joshi\main-main.png')
-# The (450, 350) is (height, width)
-bgimg = bgimg.resize((160, 100), Image.ANTIALIAS)
-bggimg = ImageTk.PhotoImage(bgimg)
+
 
 # Use CTkButton instead of tkinter Button
 button = customtkinter.CTkButton(master=root_tk, text='', command=send, image=my_img, bg_color='#3b3b3b',fg_color = '#1b1a1b',height=90, width=160)
