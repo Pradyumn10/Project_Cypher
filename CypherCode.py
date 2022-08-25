@@ -232,7 +232,6 @@ def f_text(f_obj):
     print(text)
     return(text)
 
-    
 def f_object(f_obj):
     '''
     detects object in frame using screenshot function
@@ -244,13 +243,17 @@ def f_object(f_obj):
     path=get_latest_image("./screenshots")
     image = Image.open(path)
     div=image.size[0]/500
+    path_coco = os.path.join(ROOT_DIR, 'yoloFolder', 'coco.names')
+    path_weight = os.path.join(ROOT_DIR, 'yoloFolder', 'yolov3.weights')
+    path_cfg = os.path.join(ROOT_DIR, 'yoloFolder', 'yolov3.cfg')
+    path_img = os.path.join(ROOT_DIR, 'yoloFolder', 'yolov3.cfg')
     resized_image = image.resize((round(image.size[0]/div),round(image.size[1]/div)))
-    resized_image.save('./yoloFolder/images/na.png')
+    resized_image.save('C:\\Users\milin\\Desktop\\Cypher\\yoloFolder\\images\\na.png')
     classes_names=['person','bicycle','car','motorbike','aeroplane','bus','train','truck','boat','traffic light','fire hydrant','stop sign','parking meter','bench','bird','cat','dog','horse','sheep','cow','elephant','bear','zebra','giraffe','backpack','umbrella','handbag','tie','suitcase','frisbee','skis','snowboard','sports ball','kite','baseball bat','baseball glove','skateboard','surfboard','tennis racket','bottle','wine glass','cup','fork','knife','spoon','bowl','banana','apple','sandwich','orange','broccoli','carrot','hot dog','pizza','donut','cake','chair','sofa','pottedplant','bed','diningtable','toilet','tvmonitor','laptop','mouse','remote','keyboard','cell phone','microwave','oven','toaster','sink','refrigerator','book','clock','vase','scissors','teddy bear','hair drier','toothbrush']
-    model=cv2.dnn.readNet("./yoloFolder/yolov3.cfg")
+    model=cv2.dnn.readNet(path_weight,path_cfg)
     layer_names = model.getLayerNames()
     output_layers=[layer_names[i-1]for i in model.getUnconnectedOutLayers()]
-    image=cv2.imread("./yoloFolder/images/na.png")
+    image=cv2.imread('C:\\Users\milin\\Desktop\\Cypher\\yoloFolder\\images\\na.png')
     height, width, channels = image.shape
     blob=cv2.dnn.blobFromImage(image, 0.00392, (416,416), (0,0,0), True, crop=False)
     model.setInput(blob)
@@ -292,7 +295,7 @@ def f_object(f_obj):
     cv2.imshow("Image",image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return "image is saved"
+    return "image is saved"    
 
 def f_news(f_obj):
     news = webbrowser.get('windows-default').open("https://timesofindia.indiatimes.com/home/headlines")
@@ -373,7 +376,7 @@ def f_enjoy_profile(f_obj):
     return "Started Profile Chill! Enjoy Sir!"
 
 def f_game_profile(f_obj):
-    subprocess.Popen("E:\\Program Files\\Valorant\\Riot Games\\Riot Client\\RiotClientServices.exe")
+    #subprocess.Popen("E:\\Program Files\\Valorant\\Riot Games\\Riot Client\\RiotClientServices.exe")
     subprocess.Popen("C:\\Users\\milin\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe")
     #speak("Started Profile Game! Enjoy Gaming, dont mald!")
     return "Started Profile Game! Enjoy Gaming, dont mald!"
@@ -422,18 +425,9 @@ def f_background(f_obj):
     return "The best place to get good backgrounds is opened in browser"
 
 def f_note1(f_obj):
-    #speak("What should i write, sir")
-    note = takeCommand()
     file = open('notes.txt', 'w')
-    #speak("Sir, Should i include date and time")
-    snfm = takeCommand(f_obj)
-    if 'yes' in snfm or 'sure' in snfm:
-        strTime = datetime.datetime.now().strftime("%H:%M:%S")
-        file.write(strTime)
-        file.write(" :- ")
-        file.write(note)
-    else:
-        file.write(note)
+    file.write(f_obj)
+    return "written note"
 
 def f_note2(f_obj):
     #speak("Showing Notes")
@@ -641,6 +635,12 @@ def getResponse(msg):
     elif "wikipedia" in split_statement[0]:
         statement = statement.replace("wikipedia", "")
         output = f_wiki(statement)
+        print(output)
+        return output
+
+    elif "write note" in statement:
+        statement = statement.replace("write note", "")
+        output = f_note1(statement)
         print(output)
         return output
 
